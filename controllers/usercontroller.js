@@ -16,6 +16,10 @@ const usercontroller = {
   if(!email||!password||!confirmPassword||!name){
     return next(appError("400","欄位未填寫正確！",next));
   }
+  // 暱稱2字元以上
+  if(!validator.isLength(name,{min:2})){
+    return next(appError("400","暱稱至少2個字位元以上",next));
+  }
   // 密碼正確
   if(password!==confirmPassword){
     return next(appError("400","密碼不一致！",next));
@@ -30,6 +34,12 @@ const usercontroller = {
   }
   // 加密密碼
   password = await bcrypt.hash(req.body.password,12);
+  
+  //檢查mail是否註冊過
+  const checkNewUser = await User.findOne({email});
+  if(checkNewUser){
+    return next(appError( 400,'信箱已註冊過了喔!!',next));
+  }
   const newUser = await User.create({
     email,
     password,
