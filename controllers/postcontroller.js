@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Post = require('../models/postModel')
 const User = require('../models/userModel')
+const Comment = require('../models/commentModel')
 const dotenv = require('dotenv');
 const appError = require('../service/appError');
 
